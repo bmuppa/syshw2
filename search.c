@@ -7,23 +7,15 @@
 #include <dirent.h>
 #include <sys/types.h>
 
-/*
-Name: Bhavana Muppa
-BlazerId: bmuppa
-Project #: implementing search command using C system calls
-To compile: gcc -o search search.c or make -f Make-File
-To run: ./search -S
-        ./search -s 1024
-        ./search -f .c 0
-        ./search -t d
-        ./search -t f
 
-        please refer README.txt file for compilation and more execution commands in detail
+/* 
+    Macros helpful for changes in future
 */
 #define max_value 1001
 #define emptystring sprintf(file_name,"%s", "");
 #define copy(a,b) strcpy(a,b);
 #define tabspace printf(" \t ");
+
 
 long long int limit_value;
 int depth_value;
@@ -35,6 +27,11 @@ char file_type[max_value];
 char file_name[max_value];
 char permissions_array[10];
 
+
+/*
+    Function declarations
+*/
+
 typedef void Func_Pointer(struct stat lstat_buffer, int cnt, char *current_file_path);
 void file_permissions(struct stat buffer);
 void print_list(char *file_name, int level_cnt);
@@ -42,20 +39,26 @@ void get_files(char *folder_path, int level_cnt, Func_Pointer *func_pointer);
 void get_argument_values(char argument);
 int get_depth_value(int a, char **b);
 
-void file_permissions(struct stat buffer){
-    permissions_array[0] = *( (S_ISDIR(buffer.st_mode)) ? "d" : "-");
-    permissions_array[1] = *( (buffer.st_mode & S_IRUSR) ? "r" : "-");
-    permissions_array[2] = *( (buffer.st_mode & S_IWUSR) ? "w" : "-");
-    permissions_array[3] = *( (buffer.st_mode & S_IXUSR) ? "x" : "-");
-    permissions_array[4] = *( (buffer.st_mode & S_IRGRP) ? "r" : "-");
-    permissions_array[5] = *( (buffer.st_mode & S_IWGRP) ? "w" : "-");
-    permissions_array[6] = *( (buffer.st_mode & S_IXGRP) ? "x" : "-");
-    permissions_array[7] = *( (buffer.st_mode & S_IROTH) ? "r" : "-");
-    permissions_array[8] = *( (buffer.st_mode & S_IWOTH) ? "w" : "-");
-    permissions_array[9] = *( (buffer.st_mode & S_IXOTH) ? "x" : "-");
-    if (S_ISREG(buffer.st_mode))
-        permissions_array[0] ='f';
-}
+
+/*
+        Author Name: Bhavana Muppa
+        BlazerId: bmuppa
+        Project #: implementing search command using C system calls (HomeWork 2)
+        To compile: gcc -o search search.c or make -f MakeFile
+        To run: ./search -S
+                ./search -s 1024
+                ./search -f .c 0
+                ./search -t d
+                ./search -t 
+                please refer README.txt file for compilation and more execution commands in detail
+*/
+
+
+
+/*
+    File structure print formatting function
+    Checks -f command depth as well and prints files less than the depth given
+*/
 
 void print_list(char *file_name, int level_cnt){
     if (strcmp(file_name, "") != 0)
@@ -86,6 +89,32 @@ void print_list(char *file_name, int level_cnt){
     }
 }
 
+/*
+    Checks file and directory permissions using lstat.st_mode 
+    Does and operation with bits of lstat.st_mode and its binary value
+    if value equals one permission available else not available
+
+    Referenced from https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html 
+
+*/
+void file_permissions(struct stat buffer){
+    permissions_array[0] = *( (S_ISDIR(buffer.st_mode)) ? "d" : "-");
+    permissions_array[1] = *( (buffer.st_mode & S_IRUSR) ? "r" : "-");
+    permissions_array[2] = *( (buffer.st_mode & S_IWUSR) ? "w" : "-");
+    permissions_array[3] = *( (buffer.st_mode & S_IXUSR) ? "x" : "-");
+    permissions_array[4] = *( (buffer.st_mode & S_IRGRP) ? "r" : "-");
+    permissions_array[5] = *( (buffer.st_mode & S_IWGRP) ? "w" : "-");
+    permissions_array[6] = *( (buffer.st_mode & S_IXGRP) ? "x" : "-");
+    permissions_array[7] = *( (buffer.st_mode & S_IROTH) ? "r" : "-");
+    permissions_array[8] = *( (buffer.st_mode & S_IWOTH) ? "w" : "-");
+    permissions_array[9] = *( (buffer.st_mode & S_IXOTH) ? "x" : "-");
+    if (S_ISREG(buffer.st_mode))
+        permissions_array[0] ='f';
+}
+
+/*
+    Function for filtering the files and directories according to command line arguments passed Ss:f:t
+*/
 void  commands_function(struct stat lstat_buffer,int level_cnt, char *current_file_path)
 {
     emptystring
@@ -118,6 +147,11 @@ void  commands_function(struct stat lstat_buffer,int level_cnt, char *current_fi
 
 }
 
+/*
+    Recursively calls itself till it reaches down the end of file structure tree 
+    calls a function pointer internally and prints them
+*/
+
 void get_files(char *folder_path, int level_cnt, Func_Pointer *func_pointer)
 {
     struct dirent *dirent;
@@ -147,6 +181,10 @@ void get_files(char *folder_path, int level_cnt, Func_Pointer *func_pointer)
     closedir(directory_path);
 }
 
+/*
+    Extracting command line args and setting up command bits as true for later usage
+*/
+
 void get_argument_values(char argument) {
 
     if(argument == 'S')
@@ -159,6 +197,10 @@ void get_argument_values(char argument) {
         {commands[3] = 1; }
 }
 
+/*
+    Extracting depth value and file_type from command line arg -f  and arg -t when they are specified
+
+*/
 int get_depth_value(int a, char **b){
 
     int i = 0;
@@ -205,5 +247,3 @@ int main(int argc, char **argv)
     }  
     return 0;
 }
-
-
