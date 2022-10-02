@@ -1,7 +1,7 @@
 
 ********************************************  SYSTEMS PROGRAMMING - HOMEWORK 2 *********************************************************
 
-## Source Code Working:
+## Source Code Working Explanation:
 
 # program will support 4 different commands such as -S -s -f -t
     -S 
@@ -52,7 +52,7 @@
 
         gcc -o search search.c
         <or> 
-        make -f Make-File
+        make -f MakeFile all
 
 ## Code Execution Commands:
 
@@ -90,4 +90,8 @@
 
 
 ## Reference files from lab work:
-readdir.c, lstat.c, funcptr.c, readdir_v2.c which are provided in the lab 5 assignment in the canvas.
+    readdir.c, lstat.c, funcptr.c, readdir_v2.c in the lab 5 assignment and sample codes.
+
+##Reference from online:
+    used for getting file permissions related functions
+    https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html 
