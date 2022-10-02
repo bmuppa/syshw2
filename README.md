@@ -94,4 +94,4 @@
 
 ##Reference from online:
     used for getting file permissions related functions
-    https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html 
+    https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html
